@@ -35,7 +35,7 @@ class TSP:
         return dist_cost + node_cost
 
     def plot(self, solutions: List[List[int]] = ((), )):
-        fig, axs = plt.subplots(1, len(solutions))
+        fig, axs = plt.subplots(1, len(solutions), figsize=(24,8))
 
         for i, s in enumerate(solutions):
             self._plot_single(s, axs[i] if len(solutions) > 1 else axs)
@@ -45,7 +45,10 @@ class TSP:
     def _plot_single(self, solution: List[int], fig):
         x = [c.x for c in self.nodes]
         y = [c.y for c in self.nodes]
-        fig.plot(x, y, ms=2, ls="", marker="o")
+        costs = [c.cost for c in self.nodes]
+        max_cost = max(costs)
+        costs_normalised = [cost*5/max_cost for cost in costs]
+        fig.scatter(x, y, s=costs_normalised, marker="o")
 
         for a, b in get_edges(solution):
             x = [self.nodes[a].x, self.nodes[b].x]
