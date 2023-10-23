@@ -5,7 +5,7 @@ from ce import TSP, get_edges
 
 def get_cheapest_node_for_edge(a: int, b: int, cycle: List[int], tsp: TSP) -> Tuple[int, int]:
     allowable_nodes_with_cost = {
-        i: tsp.distances[a][i] + tsp.distances[b][i] + tsp.nodes[i].cost
+        i: tsp.distances[a][i] + tsp.distances[b][i] + tsp.nodes[i].cost - tsp.distances[a][b]
         for i in tsp.indexes if i not in cycle
     }
 
@@ -26,7 +26,7 @@ def extend_cycle(cycle: List[int], tsp: TSP):
         if cheapest_node_cost < min_cost:
             min_node = cheapest_node
             min_cost = cheapest_node_cost
-            min_edge_idx = i
+            min_edge_idx = i + 1
 
     cycle.insert(min_edge_idx, min_node)
     return cycle

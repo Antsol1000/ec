@@ -14,7 +14,7 @@ def get_2_regret_weighted(edges: List[Tuple[int, int]], tsp: TSP, node_index: in
     
     change_of_distance = np.column_stack((temp_dist, np.arange(len(edges))))
     best_edge, second_best_edge = change_of_distance[change_of_distance[:, 0].argsort()][:2]
-    return second_best_edge[0] - best_edge[0] - tsp.nodes[node_index].cost, int(best_edge[1])
+    return second_best_edge[0] - tsp.nodes[node_index].cost  , int(best_edge[1]) 
 
 def extend_cycle(cycle: List[int], tsp: TSP):
     if len(cycle) == 1:
