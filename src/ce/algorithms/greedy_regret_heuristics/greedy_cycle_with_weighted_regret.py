@@ -5,7 +5,7 @@ import logging
 import numpy as np
 
 
-def get_2_regret_weighted(edges: List[Tuple[int, int]], tsp: TSP, node_index: int) -> Tuple[int, Tuple[int, int]]:
+def get_2_regret_weighted(edges: List[Tuple[int, int]], tsp: TSP, node_index: int, weight: float) -> Tuple[int, Tuple[int, int]]:
     u, v = np.array(edges).T
     dist_uv = tsp.distances[u, v]
     dist_un = tsp.distances[u, node_index]
@@ -14,9 +14,9 @@ def get_2_regret_weighted(edges: List[Tuple[int, int]], tsp: TSP, node_index: in
     
     change_of_distance = np.column_stack((temp_dist, np.arange(len(edges))))
     best_edge, second_best_edge = change_of_distance[change_of_distance[:, 0].argsort()][:2]
-    return second_best_edge[0] - tsp.nodes[node_index].cost -2*best_edge[0] , int(best_edge[1]) 
+    return (second_best_edge[0] - best_edge[0])*weight - (tsp.nodes[node_index].cost + best_edge[0])*(1-weight) , int(best_edge[1]) 
 
-def extend_cycle(cycle: List[int], tsp: TSP):
+def extend_cycle(cycle: List[int], tsp: TSP, weight:float):
     if len(cycle) == 1:
         current_node = cycle[0]
         next_node = np.argmin(tsp.distances[current_node, :] + np.array([node.cost for node in tsp.nodes]))
@@ -25,7 +25,7 @@ def extend_cycle(cycle: List[int], tsp: TSP):
     # iterate over nodes and get cost of adding each node to cycle
     edges = get_edges(cycle)
     nodes_indices = set(tsp.indexes) - set(cycle)
-    regrets = [(node, get_2_regret_weighted(edges, tsp, node)) for node in nodes_indices]
+    regrets = [(node, get_2_regret_weighted(edges, tsp, node, weight=weight)) for node in nodes_indices]
     
     # get bigest regret 
     node, (regret, edge_to_extend) = max(regrets, key=lambda x: x[1][0])
@@ -33,7 +33,7 @@ def extend_cycle(cycle: List[int], tsp: TSP):
     return cycle
     
     
-def greedy_cycle_with_weighted_regret(tsp: TSP, start_node: int, with_debug=None) -> List[int]:
+def greedy_cycle_with_weighted_regret(tsp: TSP, start_node: int, with_debug=None, weight:float = 0.5) -> List[int]:
     all_nodes, k = tsp.indexes, tsp.get_desired_solution_length()
 
     solution = [start_node]
@@ -41,6 +41,6 @@ def greedy_cycle_with_weighted_regret(tsp: TSP, start_node: int, with_debug=None
         if with_debug is not None:
             with_debug.append(solution.copy())
 
-        solution = extend_cycle(solution, tsp)
+        solution = extend_cycle(solution, tsp, weight=weight)
 
     return solution
