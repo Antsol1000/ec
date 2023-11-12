@@ -5,7 +5,6 @@ from ce.utils.plot import quality_plots
 
 def experiment(runs, run_fn, cost_fn):
     results_cost, results_time, best_solution, best_solution_cost = [], [], None, 1e9
-
     for i in range(runs):
         start = time.time()
         solution = run_fn(i)

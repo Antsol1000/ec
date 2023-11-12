@@ -1,4 +1,6 @@
 import csv
+import os
+
 from dataclasses import dataclass
 from typing import List, Tuple
 
@@ -83,12 +85,12 @@ def create_tsp(file_path: str) -> TSP:
     distances = get_distances(nodes)
     return TSP(indexes, nodes, distances)
 
-import os
+
 if __name__ == '__main__':
     print(os.getcwd())
-    tsp = create_tsp("data/TSPA.csv")
-    print(tsp.nodes[0], tsp.nodes[1])
-    print(tsp.distances[0, 0])
-    print(tsp.distances[0, 1])
-    print(tsp.distances[1, 0])
-    print(tsp.distances[1, 1])
+    tsp = create_tsp("../../data/TSPA.csv")
+    solution = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    solution_new = [0, 11, 2, 3, 4, 5, 6, 7, 8, 9]
+
+    res = tsp.get_candidate_edges_for_solution_vertex(solution, 0)
+    print(res)
