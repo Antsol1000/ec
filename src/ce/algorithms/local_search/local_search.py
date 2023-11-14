@@ -7,34 +7,28 @@ from ce import TSP
 
 
 def two_nodes_neighborhood(solution: List[int], tsp: TSP):
-    return (
-            [('i', move) for move in inter_route_moves(solution, tsp)]
-            + [('2n', move) for move in two_nodes_moves(solution)]
-    )
+    return inter_route_moves(solution, tsp.indexes) + two_nodes_moves(solution)
 
 
 def two_edges_neighborhood(solution: List[int], tsp: TSP):
-    return (
-            [('i', move) for move in inter_route_moves(solution, tsp)]
-            + [('2e', move) for move in two_edges_moves(solution)]
-    )
+    return inter_route_moves(solution, tsp.indexes) + two_edges_moves(solution)
 
 
 def get_cost_delta(neighbor, solution, tsp: TSP):
     move_type, move = neighbor
     return {
-        'i': inter_route_cost_delta,
-        '2n': two_nodes_cost_delta,
-        '2e': two_edges_cost_delta,
+        0: inter_route_cost_delta,
+        1: two_nodes_cost_delta,
+        2: two_edges_cost_delta,
     }[move_type](solution, move, tsp)
 
 
 def get_new_solution(neighbor, solution):
     move_type, move = neighbor
     return {
-        'i': inter_route_new_solution,
-        '2n': two_nodes_new_solution,
-        '2e': two_edges_new_solution,
+        0: inter_route_new_solution,
+        1: two_nodes_new_solution,
+        2: two_edges_new_solution,
     }[move_type](solution, move)
 
 

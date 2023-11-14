@@ -1,17 +1,22 @@
 from typing import List, Tuple
 
-from ce.tsp_optimized import TSP
+from numba import jit
+
+from ce import TSP
 
 
+@jit(nopython=True, cache=True)
 def two_edges_moves(solution: List[int]):
     # exchange position of any two edges
     # return pair (position_of_edge_1, position_of_edge_2)
     # edge nr i connects nodes i and i+1
+    m = []
     for i, _ in enumerate(solution):
         for j, _ in enumerate(solution):
             # no point in exchanging adjacent edges
             if i < j and (j - i) > 1 and not (i == 0 and j == len(solution) - 1):
-                yield i, j
+                m.append((2, (i, j)))
+    return m
 
 
 def two_edges_cost_delta(solution: List[int], move: Tuple[int, int], tsp: TSP) -> int:

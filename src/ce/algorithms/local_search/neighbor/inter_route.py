@@ -1,15 +1,19 @@
 from typing import List, Tuple
 
+from numba import jit, njit
+
 from ce import TSP
 
 
-def inter_route_moves(solution: List[int], tsp: TSP):
+@jit(nopython=True, cache=True)
+def inter_route_moves(solution: List[int], indexes):
     # replace any node of the solution with any node from the rest
     # return pair (position_to_replace, node_idx_to_insert)
-    outer_nodes = [i for i in tsp.indexes if i not in solution]
+    m = []
     for i, _ in enumerate(solution):
-        for n in outer_nodes:
-            yield i, n
+        for n in set(indexes) - set(solution):
+            m.append((0, (i, n)))
+    return m
 
 
 def inter_route_cost_delta(solution: List[int], move: Tuple[int, int], tsp: TSP) -> int:

@@ -1,16 +1,21 @@
 from typing import List, Tuple
 
+from numba import jit
+
 from ce import TSP
 
 
+@jit(nopython=True, cache=True)
 def two_nodes_moves(solution: List[int]):
     # exchange position of any two nodes
     # return pair (position_1, position_2)
+    m = []
     for i, _ in enumerate(solution):
         for j, _ in enumerate(solution):
             # first node is fixed to not generate different (but same) neighbors
             if 0 < i < j:
-                yield i, j
+                m.append((1, (i, j)))
+    return m
 
 
 def two_nodes_cost_delta(solution: List[int], move: Tuple[int, int], tsp: TSP) -> int:

@@ -1,5 +1,9 @@
 import time
 
+from ce import create_tsp
+from ce.algorithms.greedy_heuristics import random_solution
+from ce.algorithms.local_search import two_nodes_candidates_neighborhood, two_nodes_neighborhood
+from ce.algorithms.local_search.neighbor.candidate_moves import calculate_candidate_edges
 from ce.utils.plot import quality_plots
 
 
@@ -39,4 +43,7 @@ def run_all_experiments(runs, list_of_fn, cost_fn, names):
     return best_solutions, results_list
 
 if __name__ == '__main__':
-    print(1)
+    t = create_tsp("../../../data/TSPC.csv")
+    c = random_solution(t)
+    for i in range(500):
+        a = two_nodes_candidates_neighborhood(c, t, calculate_candidate_edges(t, 10))
