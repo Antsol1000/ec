@@ -19,6 +19,12 @@ def two_nodes_cost_delta(solution: List[int], move: Tuple[int, int], tsp: TSP) -
     before1, after1 = solution[(i - 1) % len(solution)], solution[(i + 1) % len(solution)]
     before2, after2 = solution[(j - 1) % len(solution)], solution[(j + 1) % len(solution)]
 
+    if after1 == node2:
+        return (
+            + tsp.distances[before1, node2] + tsp.distances[node1, after2]
+            - tsp.distances[before1, node1] - tsp.distances[node2, after2]
+        )
+
     return (
             + tsp.distances[before1, node2] + tsp.distances[node2, after1]
             + tsp.distances[before2, node1] + tsp.distances[node1, after2]
