@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from ce.tsp_optimized import TSP
+from ce import TSP
 
 
 def inter_route_moves(solution: List[int], tsp: TSP):

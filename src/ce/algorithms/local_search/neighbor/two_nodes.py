@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from ce.tsp_optimized import TSP
+from ce import TSP
 
 
 def two_nodes_moves(solution: List[int]):

@@ -1,6 +1,7 @@
-from ce.tsp_optimized import TSP
+from typing import List, Set
 
-from typing import List, Tuple, Set
+from ce import TSP
+
 
 def get_candidate_edges_for_solution_vertex(tsp: TSP, vertex: int, n: int = 10):
     # outer nodes are nodes not in solution

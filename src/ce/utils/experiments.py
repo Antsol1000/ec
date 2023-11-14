@@ -37,3 +37,6 @@ def run_all_experiments(runs, list_of_fn, cost_fn, names):
     print("**************************************************************************************************\n\n")
     quality_plots(results_list, categories=names)
     return best_solutions, results_list
+
+if __name__ == '__main__':
+    print(1)

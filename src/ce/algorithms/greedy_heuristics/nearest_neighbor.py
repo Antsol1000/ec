@@ -6,9 +6,7 @@ from ce import TSP
 def get_nearest_neighbor(node: int, current_solution: List[int], tsp: TSP) -> int:
     allowable_nodes = [i for i in tsp.indexes if i not in current_solution]
 
-    # TODO: should we include node cost or not ???
-    return min(allowable_nodes, key=lambda x: tsp.distances[node][x] + tsp.nodes[x].cost)
-    # return min(allowable_nodes, key=lambda x: tsp.distances[node][x])
+    return min(allowable_nodes, key=lambda x: tsp.distances[node, x] + tsp.nodes[x].cost)
 
 
 def nearest_neighbor(tsp: TSP, start_node: int, with_debug=None) -> List[int]:

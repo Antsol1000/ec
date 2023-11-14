@@ -4,7 +4,7 @@ from ce.algorithms.local_search.neighbor.inter_route import *
 from ce.algorithms.local_search.neighbor.two_edges import *
 from ce.algorithms.local_search.neighbor.two_nodes import *
 from ce.algorithms.local_search.neighbor.candidate_moves import *
-from ce.tsp_optimized import TSP
+from ce import TSP
 
 
 def two_nodes_candidates_neighborhood(solution: List[int], tsp: TSP, candidate_edges: set):
