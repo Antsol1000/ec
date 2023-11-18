@@ -3,7 +3,6 @@ import numpy as np
 from ce.algorithms.local_search.neighbor.inter_route import *
 from ce.algorithms.local_search.neighbor.two_edges import *
 from ce.algorithms.local_search.neighbor.two_nodes import *
-from ce import TSP
 
 
 def two_nodes_neighborhood(solution: List[int], tsp: TSP):
@@ -61,9 +60,11 @@ def steepest_local_search(tsp: TSP, init_solution, neighborhood_fn):
     local_optimum, counter = False, 0
 
     while not local_optimum:
-        neighborhood = neighborhood_fn(solution, tsp)
-        cost_delta_matrix = {n: get_cost_delta(n, solution, tsp) for n in neighborhood}
-        best_neighbor = min(neighborhood, key=lambda x: cost_delta_matrix[x])
+        cost_delta_matrix = {
+            n: get_cost_delta(n, solution, tsp)
+            for n in neighborhood_fn(solution, tsp)
+        }
+        best_neighbor = min(cost_delta_matrix, key=cost_delta_matrix.get)
         if cost_delta_matrix[best_neighbor] < 0:
             solution = get_new_solution(best_neighbor, solution)
             counter += 1

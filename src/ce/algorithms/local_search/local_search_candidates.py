@@ -21,9 +21,11 @@ def steepest_local_candidates_search(tsp: TSP, init_solution, neighborhood_fn, c
     local_optimum, counter = False, 0
 
     while not local_optimum:
-        neighborhood = neighborhood_fn(solution, tsp, candidate_edges)
-        cost_delta_matrix = {n: get_cost_delta(n, solution, tsp) for n in neighborhood}
-        best_neighbor = min(neighborhood, key=lambda x: cost_delta_matrix[x])
+        cost_delta_matrix = {
+            n: get_cost_delta(n, solution, tsp)
+            for n in neighborhood_fn(solution, tsp, candidate_edges)
+        }
+        best_neighbor = min(cost_delta_matrix, key=cost_delta_matrix.get)
         if cost_delta_matrix[best_neighbor] < 0:
             solution = get_new_solution(best_neighbor, solution)
             counter += 1
