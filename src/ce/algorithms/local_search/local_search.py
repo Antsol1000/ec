@@ -55,15 +55,19 @@ def greedy_local_search(tsp: TSP, init_solution, neighborhood_fn):
     return solution, counter
 
 
+def get_cost_delta_matrix(neighborhood_fn, solution, tsp: TSP):
+    return {
+        n: get_cost_delta(n, solution, tsp)
+        for n in neighborhood_fn(solution, tsp)
+    }
+
+
 def steepest_local_search(tsp: TSP, init_solution, neighborhood_fn):
     solution = init_solution
     local_optimum, counter = False, 0
 
     while not local_optimum:
-        cost_delta_matrix = {
-            n: get_cost_delta(n, solution, tsp)
-            for n in neighborhood_fn(solution, tsp)
-        }
+        cost_delta_matrix = get_cost_delta_matrix(neighborhood_fn, solution, tsp)
         best_neighbor = min(cost_delta_matrix, key=cost_delta_matrix.get)
         if cost_delta_matrix[best_neighbor] < 0:
             solution = get_new_solution(best_neighbor, solution)
