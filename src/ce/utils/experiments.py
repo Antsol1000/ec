@@ -1,12 +1,11 @@
 import random
 import time
 
+import numpy as np
+
 from ce import create_tsp
 from ce.algorithms.greedy_heuristics import random_solution
-from ce.algorithms.local_search import steepest_local_search, two_edges_neighborhood, two_nodes_candidates_neighborhood, \
-    two_nodes_neighborhood
-from ce.algorithms.local_search.local_search_cache import steepest_local_search_cache
-from ce.algorithms.local_search.neighbor.candidate_moves import calculate_candidate_edges
+from ce.algorithms.local_search import iterated_local_search, multiple_start_local_search, two_edges_neighborhood
 from ce.utils.plot import quality_plots
 
 
@@ -52,11 +51,13 @@ def run_all_experiments(runs, list_of_fn, cost_fn, names):
 
 if __name__ == '__main__':
     t = create_tsp("../../../data/TSPC.csv")
+    # c = [random_solution(t) for _ in range(5)]
     c = random_solution(t)
 
     random.seed(13)
-    # steepest_local_search(t, c, two_nodes_neighborhood)
-    # steepest_local_search_cache(t, c, two_nodes_neighborhood)
+    np.random.seed(13)
 
-    # steepest_local_search(t, c, two_edges_neighborhood)
-    steepest_local_search_cache(t, c, two_edges_neighborhood)
+    # print(multiple_start_local_search(t, c, two_edges_neighborhood))
+    cache = []
+    print(iterated_local_search(t, c, 10, two_edges_neighborhood, cache))
+    print(cache)
